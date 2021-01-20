@@ -9,10 +9,18 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    @IBOutlet weak var cleanCityLabel: UILabel!
+    
+    @IBOutlet weak var cleanCityImage: UIImageView!
+    
+    @IBOutlet weak var createAccountButton: UIButton!
+    
+    @IBOutlet weak var existingAccountButton: UIButton!
+    
+    @IBOutlet weak var noAccountButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
 
