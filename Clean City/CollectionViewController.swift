@@ -293,27 +293,25 @@ class CollectionViewController: UICollectionViewController, UINavigationControll
         guard !results.isEmpty else {
         return
         }
-        
-        let latitudeName = UUID().uuidString
-        let longitudeName = UUID().uuidString
-        
-        let longitudePath = getDocumentsDirectory().appendingPathComponent(longitudeName)
-        let latitudePath = getDocumentsDirectory().appendingPathComponent(latitudeName)
 
         for result in results {
            result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (object, error) in
               if let image = object as? UIImage {
                 DispatchQueue.main.async { [self] in
-                    let assetId = result.assetIdentifier
-                    let asset = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil).firstObject
-                    print(asset?.creationDate ?? "No date")
-                    print(asset?.location?.coordinate ?? "No location")
-                    PHImageManager.default().requestImage(for: asset!, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: nil, resultHandler: { (image, info) in print("requested image is \(String(describing: image))")
-                        })
+                    if let assetId = result.assetIdentifier {
+                    let assetResults = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil)
+                        print(assetResults.firstObject?.creationDate ?? "No date")
+                        print(assetResults.firstObject?.location?.coordinate ?? "No location")
+                    }
                     // Use UIImage
                     let imageName = UUID().uuidString
-                    let imagePath = self.getDocumentsDirectory().appendingPathComponent(imageName)
+                    let latitudeName = UUID().uuidString
+                    let longitudeName = UUID().uuidString
+                    let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
                     print("Selected image: \(image)")
+                    let longitudePath = getDocumentsDirectory().appendingPathComponent(longitudeName)
+                    let latitudePath = getDocumentsDirectory().appendingPathComponent(latitudeName)
+                        
                     if let jpegData = image.jpegData(compressionQuality: 0.8) {
                         try? jpegData.write(to: imagePath)
                         }
